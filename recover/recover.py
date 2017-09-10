@@ -19,33 +19,36 @@ class Mainfunc():
        try:
          ret = sub.Popen(self.cmd,shell=True,stdout=sub.PIPE,stderr=sub.PIPE)
          out,err = ret.stdout.read(),ret.stderr.read()
-         result = out if out else err
-      #   print(result.decode('gb2312'))
+         if err:
+            print("Something wrong...,the reason is %s" % err.decode('gb2312'))
        except Exception as f:
          print(f)
 
 
 cmd = "gunzip %s/*.sql.gz " % path
 un = Mainfunc(cmd)
-print("All of things will be unziped...")
+#print("All of things will be unziped...")
 un.subcommand()
-print("Fininshed!!!")
+#print("Fininshed!!!")
 sourcelist=os.listdir(path)
     
 def get_dbname():
     for i in sourcelist:
         dbname,*m = i.split('.')
         dbnamelist.append(dbname)
-
+        print(dbnamelist)
 
     for db in dbnamelist:
         cmd = "cat list.txt| grep %s | awk '{print $8 }'" % db
         child = sub.Popen(cmd,shell=True,stdout=sub.PIPE)
-        res = child.stdout.read()
-        dblist.append(res.decode('gb2312').replace('\n',''))
-
+        res = child.stdout.read().decode('gb2312')
+        if res == '':
+           print("Cannot find %s in list.txt..."% db)
+        else:
+           dblist.append(res.replace('\n',''))
 
 def sqlcommand():
+  try:
     for dbname,db,source in zip(dbnamelist,dblist,sourcelist):
         sqlconnect = "mysql -u%s -h%s -p%s" % (user,db,pwd)
         sqlcmd = [ sqlconnect + " -e 'drop  databases %s if exists;'" % dbname,
@@ -57,8 +60,12 @@ def sqlcommand():
 
     global t
     t = 0.01    
-    
+  except Exception as f:
+    print(f)
+
+  
 def view_bar():
+ try:
    for i in range(0,101):
       time.sleep(t)
       rate = i /100
@@ -67,7 +74,10 @@ def view_bar():
       sys.stdout.write(r)
       sys.stdout.flush()
    print()
-      
+ except Exception as f :
+      print(f)
+ 
+
 def mupt():
     thlist=[]
     s = threading.Thread(target=sqlcommand)
@@ -83,5 +93,4 @@ def mupt():
 
 if __name__=="__main__":
    get_dbname()
-   
    mupt()
