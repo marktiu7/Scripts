@@ -82,14 +82,10 @@ def mupt():
     thlist=[]
     s = threading.Thread(target=sqlcommand)
     v = threading.Thread(target=view_bar)
-    thlist.append(s)
-    thlist.append(v)
-
-    for m in thlist:
-        m.start()
-
-    for m in thlist:
-        m.join()
+    s.start()
+    v.setDaemon(True)
+    v.start()
+    s.join()
 
 if __name__=="__main__":
    get_dbname()
