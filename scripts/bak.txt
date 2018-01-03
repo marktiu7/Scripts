@@ -1,0 +1,6 @@
+192.168.0.21  8883 Server_stest lord_stest  KOSYStest 192.168.253.5
+192.168.0.5   8881 Server_s1 lord_s1  KOSYS1 192.168.0.18
+192.168.0.21  8881 Server_s2 lord_s2  KOSYS2 192.168.0.20
+192.168.0.5   8882 Server_s3 lord_s3  KOSYS3 192.168.0.18
+192.168.0.21  8882 Server_s4 lord_s4  KOSYS4 192.168.0.20
+192.168.0.5   8883 Server_s5 lord_s5  KOSYS5 192.168.0.18
