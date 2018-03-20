@@ -7,7 +7,7 @@ import paramiko as pa
 import subprocess as sub
 
 user='root'
-pwd='JGyou(20170206)$'
+pwd='#######'
 
 def conn(ip,cmd):
   try:
